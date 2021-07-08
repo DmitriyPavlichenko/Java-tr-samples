@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+</head>
+<body>
+<form>
+    <label for="stockName">Stock name:</label>
+    <input type="text" id="stockName" name="stockName"><br><br>
+    <button type='button' onclick="clickHandler()">submit</button >
+</form>
+<span id="messageGoesHere"></span>
+<script type="text/javascript">
+    let ws = new WebSocket("ws://localhost:8080/WebSocket_test-1.0-SNAPSHOT/Stock");
+
+    function clickHandler() {
+        let stockName = document.getElementById("stockName").value;
+        if (stockName === "") {
+            let mySpan = document.getElementById("messageGoesHere");
+            mySpan.innerHTML = "Invalid stock name";
+        } else {
+            ws.send(stockName);
+        }
+    }
+
+    ws.onmessage = function (event) {
+        let mySpan = document.getElementById("messageGoesHere");
+        mySpan.innerHTML = event.data;
+        console.log("Some text")
+    };
+</script>
+</body>
+</html>
